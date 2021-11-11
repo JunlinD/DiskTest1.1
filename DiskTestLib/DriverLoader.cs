@@ -30,7 +30,7 @@ namespace DiskTestLib
         {
             _DiskInformation = d;
             if (d == null && d.Physical_Name.Length == 0) return;
-            _DirverHandle = CreateFileA("\\\\.\\PHYSICALDRIVE1", GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, IntPtr.Zero, OPEN_EXISTING, 0, IntPtr.Zero);
+            _DirverHandle = CreateFileA(_DiskInformation.Physical_Name, GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, IntPtr.Zero, OPEN_EXISTING, 0, IntPtr.Zero);
             
             _DirverStream = new System.IO.FileStream(_DirverHandle, System.IO.FileAccess.ReadWrite);
         }

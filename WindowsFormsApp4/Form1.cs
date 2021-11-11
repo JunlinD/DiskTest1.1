@@ -26,7 +26,8 @@ namespace DiskTest11
             InitializeComponent();
             Init_Disk_Information();
             Init_Disk_Driver();
-            OrderWriteAndVerify(0, 100, 1, 1, 1);
+            //OrderWriteAndVerify(0, 100, 1, 1, 1);
+            RandomWriteAndVerify(0, 5);
             int pageIndex = 100;
             TreeNode parent = Menu.CreateNode("Setting", pageIndex);
             Menu.CreateChildNode(parent, "Disk", ++pageIndex);
@@ -197,6 +198,148 @@ namespace DiskTest11
                 CompareArray = driver.ReadSector(i, block_size);
             }
             
+        }
+        public void RandomWriteAndVerify(int driver_index,long test_num=0,long test_time=0)
+        {
+            if(Disk_Driver_List.Count<=0)
+            {
+                MessageBox.Show("未检测到设备！");
+                return;
+            }
+            Random R = new Random();
+            DriverLoader driver = (DriverLoader)Disk_Driver_List[driver_index];
+            if(test_num==0)
+            {
+                long start_time = Environment.TickCount;
+                int error_num = 0;
+                while (true)
+                {
+                    int temp_block = R.Next(1, 5);
+                    int actual_block_size = DEAFAUT_BLOCKSIZE * temp_block;
+                    TestArray = new byte[actual_block_size];
+                    CompareArray = new byte[actual_block_size];
+                    Init_TestArray(temp_block,2);
+                    long pos = NextLong(0, driver.DiskInformation.DiskSectorSize-temp_block);
+                    Console.WriteLine("写入" + pos + "扇区");
+                    driver.WritSector(TestArray, pos, temp_block);
+                    CompareArray = driver.ReadSector(pos, temp_block);
+                    error_num += VerifyArray(TestArray, CompareArray);
+                    long end_time = Environment.TickCount;
+                    if (end_time - start_time >= test_time)
+                        break;
+                }
+                if (error_num == 0)
+                    Console.WriteLine("读写测试完成，测试了" + test_time + "毫秒未发生错误！");
+            }
+            else if(test_time==0)
+            {
+                long temp_num = 0;
+                int error_num = 0;
+                while (true)
+                {
+                    if (temp_num >= test_num)
+                        break;
+                    int temp_block = R.Next(1, 5);
+                    int actual_block_size = DEAFAUT_BLOCKSIZE * temp_block;
+                    TestArray = new byte[actual_block_size];
+                    CompareArray = new byte[actual_block_size];
+                    Init_TestArray(temp_block, 2);
+                    long pos = NextLong(0, driver.DiskInformation.DiskSectorSize - temp_block);
+                    Console.WriteLine("写入" + pos + "扇区");
+                    driver.WritSector(TestArray, pos, temp_block);
+                    CompareArray = driver.ReadSector(pos, temp_block);
+                    error_num += VerifyArray(TestArray, CompareArray);
+                    temp_num++;
+                }
+                if (error_num == 0)
+                    Console.WriteLine("读写测试完成，测试了" + test_num + "次未发生错误！");
+            }
+        }
+        public void RandomOnlyRead(int driver_index, long test_num = 0, long test_time = 0)
+        {
+            if (Disk_Driver_List.Count <= 0)
+            {
+                MessageBox.Show("未检测到设备！");
+                return;
+            }
+            Random R = new Random();
+            DriverLoader driver = (DriverLoader)Disk_Driver_List[driver_index];
+            if (test_num == 0)
+            {
+                long start_time = Environment.TickCount;
+                while (true)
+                {
+                    int temp_block = R.Next(1, 5);
+                    int actual_block_size = DEAFAUT_BLOCKSIZE * temp_block;
+                    CompareArray = new byte[actual_block_size];
+                    long pos = NextLong(0, driver.DiskInformation.DiskSectorSize - temp_block);
+                    CompareArray = driver.ReadSector(pos, temp_block);
+                    long end_time = Environment.TickCount;
+                    if (end_time - start_time >= test_time)
+                        break;
+                }
+                Console.WriteLine("只读测试完成，测试了" + test_time + "毫秒未发生错误！");
+            }
+            else if (test_time == 0)
+            {
+                long temp_num = 0;
+                while (true)
+                {
+                    if (temp_num >= test_num)
+                        break;
+                    int temp_block = R.Next(1, 5);
+                    int actual_block_size = DEAFAUT_BLOCKSIZE * temp_block;
+                    CompareArray = new byte[actual_block_size];
+                    long pos = NextLong(0, driver.DiskInformation.DiskSectorSize - temp_block);
+                    CompareArray = driver.ReadSector(pos, temp_block);
+                    temp_num++;
+                }
+                Console.WriteLine("读写测试完成，测试了" + test_num + "次未发生错误！");
+            }
+        }
+        public void RandomOnlyWrite(int driver_index, long test_num = 0, long test_time = 0)
+        {
+            if (Disk_Driver_List.Count <= 0)
+            {
+                MessageBox.Show("未检测到设备！");
+                return;
+            }
+            Random R = new Random();
+            DriverLoader driver = (DriverLoader)Disk_Driver_List[driver_index];
+            if (test_num == 0)
+            {
+                long start_time = Environment.TickCount;
+                while (true)
+                {
+                    int temp_block = R.Next(1, 5);
+                    int actual_block_size = DEAFAUT_BLOCKSIZE * temp_block;
+                    TestArray = new byte[actual_block_size];
+                    Init_TestArray(temp_block, 2);
+                    long pos = NextLong(0, driver.DiskInformation.DiskSectorSize - temp_block);
+                    driver.WritSector(TestArray, pos, temp_block);
+                    long end_time = Environment.TickCount;
+                    if (end_time - start_time >= test_time)
+                        break;
+                }
+                Console.WriteLine("写测试完成，测试了" + test_time + "毫秒！");
+            }
+            else if (test_time == 0)
+            {
+                long temp_num = 0;
+                while (true)
+                {
+                    if (temp_num >= test_num)
+                        break;
+                    int temp_block = R.Next(1, 5);
+                    int actual_block_size = DEAFAUT_BLOCKSIZE * temp_block;
+                    TestArray = new byte[actual_block_size];
+                    Init_TestArray(temp_block, 2);
+                    long pos = NextLong(0, driver.DiskInformation.DiskSectorSize - temp_block);
+                    driver.WritSector(TestArray, pos, temp_block);
+                    temp_num++;
+                }
+                Console.WriteLine("写测试完成，测试了" + test_num + "次！");
+            }
         }
         public void Init_TestArray(int block_size,int mode)
         {
