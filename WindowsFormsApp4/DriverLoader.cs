@@ -7,9 +7,6 @@ using System.Text;
 
 namespace DiskTestLib
 {
-    /// <summary>
-    /// 驱动器读写类
-    /// </summary>
     public class DriverLoader
     {
 
@@ -33,7 +30,7 @@ namespace DiskTestLib
         {
             _DiskInformation = d;
             if (d == null && d.Physical_Name.Length == 0) return;
-            _DirverHandle = CreateFileA("\\\\.\\PHYSICALDRIVE1", GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, IntPtr.Zero, OPEN_EXISTING, 0, IntPtr.Zero);
+            _DirverHandle = CreateFileA(_DiskInformation.Physical_Name, GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, IntPtr.Zero, OPEN_EXISTING, 0, IntPtr.Zero);
             
             _DirverStream = new System.IO.FileStream(_DirverHandle, System.IO.FileAccess.ReadWrite);
         }
@@ -110,9 +107,6 @@ namespace DiskTestLib
         }
 
     }
-    /// <summary>
-    /// 驱动器信息类
-    /// </summary>
     public class DiskInformation
     {
         private string _DiskPhysicalName;//直接物理驱动器号
@@ -138,9 +132,6 @@ namespace DiskTestLib
         public decimal DiskSize { get { return _DiskSize; } }
         public int ID { get { return _ID; } }
     }
-    /// <summary>
-    /// 测试信息类
-    /// </summary>
     public class TestInformation
     {
         public const int DATA_ERROR = 0;

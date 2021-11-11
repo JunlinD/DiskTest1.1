@@ -199,7 +199,7 @@ namespace DiskTest11
             }
             
         }
-        public void RandomWriteAndVerify(int driver_index,long test_num=0,long test_time=0)
+        public void RandomWriteAndVerify(int driver_index,long test_num=0,long test_time=0,int test_mode=2)
         {
             if(Disk_Driver_List.Count<=0)
             {
@@ -218,7 +218,7 @@ namespace DiskTest11
                     int actual_block_size = DEAFAUT_BLOCKSIZE * temp_block;
                     TestArray = new byte[actual_block_size];
                     CompareArray = new byte[actual_block_size];
-                    Init_TestArray(temp_block,2);
+                    Init_TestArray(temp_block,test_mode);
                     long pos = NextLong(0, driver.DiskInformation.DiskSectorSize-temp_block);
                     Console.WriteLine("写入" + pos + "扇区");
                     driver.WritSector(TestArray, pos, temp_block);
@@ -243,7 +243,7 @@ namespace DiskTest11
                     int actual_block_size = DEAFAUT_BLOCKSIZE * temp_block;
                     TestArray = new byte[actual_block_size];
                     CompareArray = new byte[actual_block_size];
-                    Init_TestArray(temp_block, 2);
+                    Init_TestArray(temp_block, test_mode);
                     long pos = NextLong(0, driver.DiskInformation.DiskSectorSize - temp_block);
                     Console.WriteLine("写入" + pos + "扇区");
                     driver.WritSector(TestArray, pos, temp_block);
@@ -255,7 +255,7 @@ namespace DiskTest11
                     Console.WriteLine("读写测试完成，测试了" + test_num + "次未发生错误！");
             }
         }
-        public void RandomOnlyRead(int driver_index, long test_num = 0, long test_time = 0)
+        public void RandomOnlyRead(int driver_index, long test_num = 0, long test_time = 0,int test_mode=2)
         {
             if (Disk_Driver_List.Count <= 0)
             {
@@ -297,7 +297,7 @@ namespace DiskTest11
                 Console.WriteLine("读写测试完成，测试了" + test_num + "次未发生错误！");
             }
         }
-        public void RandomOnlyWrite(int driver_index, long test_num = 0, long test_time = 0)
+        public void RandomOnlyWrite(int driver_index, long test_num = 0, long test_time = 0,int test_mode=2)
         {
             if (Disk_Driver_List.Count <= 0)
             {
@@ -314,7 +314,7 @@ namespace DiskTest11
                     int temp_block = R.Next(1, 5);
                     int actual_block_size = DEAFAUT_BLOCKSIZE * temp_block;
                     TestArray = new byte[actual_block_size];
-                    Init_TestArray(temp_block, 2);
+                    Init_TestArray(temp_block, test_mode);
                     long pos = NextLong(0, driver.DiskInformation.DiskSectorSize - temp_block);
                     driver.WritSector(TestArray, pos, temp_block);
                     long end_time = Environment.TickCount;
@@ -333,7 +333,7 @@ namespace DiskTest11
                     int temp_block = R.Next(1, 5);
                     int actual_block_size = DEAFAUT_BLOCKSIZE * temp_block;
                     TestArray = new byte[actual_block_size];
-                    Init_TestArray(temp_block, 2);
+                    Init_TestArray(temp_block, test_mode);
                     long pos = NextLong(0, driver.DiskInformation.DiskSectorSize - temp_block);
                     driver.WritSector(TestArray, pos, temp_block);
                     temp_num++;
