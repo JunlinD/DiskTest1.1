@@ -41,6 +41,9 @@ namespace DiskTest11
             Disk Page1 = new Disk();
             uiTabControl1.AddPage(new Disk());
         }
+        /// <summary>
+        /// 初始化驱动器信息数组
+        /// </summary>
         public void Init_Disk_Information()
         {
             ManagementClass Diskobject = new ManagementClass("Win32_DiskDrive");//获取一个磁盘实例对象
@@ -76,6 +79,9 @@ namespace DiskTest11
                 MessageBox.Show("未检测到设备！");
             }
         }
+        /// <summary>
+        /// 初始化驱动器数组
+        /// </summary>
         public void Init_Disk_Driver()
         {
             if(Disk_Informaion_List.Count<=0)
@@ -90,6 +96,14 @@ namespace DiskTest11
                 Disk_Driver_List.Add(driver);
             }
         }
+        /// <summary>
+        /// 顺序读写测试
+        /// </summary>
+        /// <param name="driver_index"></param>
+        /// <param name="percent"></param>
+        /// <param name="test_mode"></param>
+        /// <param name="block_size"></param>
+        /// <param name="circle"></param>
         public void OrderWriteAndVerify(int driver_index,int percent=100,int test_mode=0,int block_size=1,int circle=1)
         {
             if(Disk_Driver_List.Count<=0)
@@ -133,7 +147,57 @@ namespace DiskTest11
                 Console.WriteLine("测试模式不存在，请重新选择!");
             }
         }
-
+        public void OrderOnlyWrite(int driver_index, int percent = 100, int test_mode = 0, int block_size = 1, int circle = 1)
+        {
+            if (Disk_Driver_List.Count <= 0)
+            {
+                MessageBox.Show("未检测到设备！");
+                return;
+            }
+            DriverLoader driver = (DriverLoader)Disk_Driver_List[driver_index];
+            TestArray = new byte[DEAFAUT_BLOCKSIZE * block_size];
+            CompareArray = new byte[DEAFAUT_BLOCKSIZE * block_size];
+            //long actual_size = ((driver.DiskInformation.DiskSectorSize / block_size)*percent)/100;
+            long actual_size = 10;
+            if (test_mode == 0 || test_mode == 1)
+            {
+                Init_TestArray(block_size, test_mode);
+                for (long i = 0; i < actual_size; i++)
+                {
+                    driver.WritSector(TestArray, i, block_size);
+                }
+            }
+            else if (test_mode == 2)
+            {
+                int error_num = 0;
+                for (long i = 0; i < actual_size; i++)
+                {
+                    Init_TestArray(block_size, test_mode);
+                    driver.WritSector(TestArray, i, block_size);
+                }             
+            }
+            else
+            {
+                Console.WriteLine("测试模式不存在，请重新选择!");
+            }
+        }
+        public void OrderOnlyRead(int driver_index, int percent = 100, int test_mode = 0, int block_size = 1, int circle = 1)
+        {
+            if (Disk_Driver_List.Count <= 0)
+            {
+                MessageBox.Show("未检测到设备！");
+                return;
+            }
+            DriverLoader driver = (DriverLoader)Disk_Driver_List[driver_index];
+            CompareArray = new byte[DEAFAUT_BLOCKSIZE * block_size];
+            //long actual_size = ((driver.DiskInformation.DiskSectorSize / block_size)*percent)/100;
+            long actual_size = 10;
+            for (long i = 0; i < actual_size; i++)
+            {
+                CompareArray = driver.ReadSector(i, block_size);
+            }
+            
+        }
         public void Init_TestArray(int block_size,int mode)
         {
             if (block_size == 0)

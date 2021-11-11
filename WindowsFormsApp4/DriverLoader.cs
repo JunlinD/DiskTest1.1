@@ -7,6 +7,9 @@ using System.Text;
 
 namespace DiskTestLib
 {
+    /// <summary>
+    /// 驱动器读写类
+    /// </summary>
     public class DriverLoader
     {
 
@@ -107,6 +110,9 @@ namespace DiskTestLib
         }
 
     }
+    /// <summary>
+    /// 驱动器信息类
+    /// </summary>
     public class DiskInformation
     {
         private string _DiskPhysicalName;//直接物理驱动器号
@@ -132,6 +138,9 @@ namespace DiskTestLib
         public decimal DiskSize { get { return _DiskSize; } }
         public int ID { get { return _ID; } }
     }
+    /// <summary>
+    /// 测试信息类
+    /// </summary>
     public class TestInformation
     {
         public const int DATA_ERROR = 0;
