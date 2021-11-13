@@ -145,12 +145,12 @@ namespace DiskTest11
             this.checkBox3.Text = "Single file";
             this.checkBox3.UseVisualStyleBackColor = true;
             // 
-            // checkBox2
+            // TestOrNot
             // 
             this.checkBox2.AutoSize = true;
             this.checkBox2.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.checkBox2.Location = new System.Drawing.Point(42, 147);
-            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Name = "TestOrNot";
             this.checkBox2.Size = new System.Drawing.Size(250, 35);
             this.checkBox2.TabIndex = 5;
             this.checkBox2.Text = "Time stamped files";

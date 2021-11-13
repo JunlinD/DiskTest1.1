@@ -113,12 +113,14 @@ namespace DiskTestLib
         private long _DiskSectorSize;
         private decimal _DiskSize;
         private int _ID;
+        
         public DiskInformation()
         {
             _DiskPhysicalName = null;//直接物理驱动器号
             _DiskSectorSize = 0;
             _DiskSize = 0;
             _ID = 0;
+          
         }
         public DiskInformation(string diskphysicalname,long disksector,decimal disksize,int id)
         {
@@ -126,11 +128,57 @@ namespace DiskTestLib
             _DiskSectorSize=disksector;
             _DiskSize=disksize;
             _ID = id;
-        }
+        }        
         public string Physical_Name { get { return _DiskPhysicalName; } }
         public long DiskSectorSize { get { return _DiskSectorSize; } }
         public decimal DiskSize { get { return _DiskSize; } }
         public int ID { get { return _ID; } }
+    }
+    public class ChooseInformation
+    {
+        public bool TestOrNot;
+        public int TestMode;
+        public int TestDataMode;
+        public int TestPercent;
+        public int BlockSize;
+        public long TestTime;
+        public int TestCircle;
+        public long TestNum;
+        public ChooseInformation()
+        {
+            TestOrNot = false;
+            TestMode = 0;
+            TestDataMode = 0;
+            TestPercent = 0;
+            BlockSize = 0;
+            TestTime = 0;
+            TestCircle = 0;
+            TestNum = 0;
+        }
+        public void SetRandomParameters(bool testornot, int testmode, long testtime, long testnum)
+        {
+            TestOrNot = testornot;
+            TestMode = testmode;
+            TestTime = testtime;
+            TestNum = testnum;
+            if (testmode == -1||(testtime==0&&testnum==0))
+                TestOrNot = false;
+        }
+        public void SetOrderParameters(bool testornot, int testmode, int testdatamode, int testpercent, int blocksize, long testtime, long testnum, int testcircle)
+        {
+            TestOrNot = testornot;
+            TestMode = testmode;
+            TestDataMode = testdatamode;
+            TestPercent = testpercent;
+            BlockSize = blocksize;
+            TestTime = testtime;
+            TestCircle = testcircle;
+            TestNum = testnum;
+            if (testmode == -1 || (testtime == 0 && testnum == 0) || blocksize == 0 || testdatamode == -1)
+            {
+                TestOrNot = false;
+            }
+        }
     }
     public class TestInformation
     {
