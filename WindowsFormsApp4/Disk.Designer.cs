@@ -188,6 +188,7 @@ namespace DiskTest11
             this.CircleNumble.Name = "CircleNumble";
             this.CircleNumble.Size = new System.Drawing.Size(130, 39);
             this.CircleNumble.TabIndex = 19;
+            this.CircleNumble.Text = "0";
             // 
             // label6
             // 
@@ -220,6 +221,7 @@ namespace DiskTest11
             this.TestTime.Name = "TestTime";
             this.TestTime.Size = new System.Drawing.Size(130, 39);
             this.TestTime.TabIndex = 10;
+            this.TestTime.Text = "0";
             // 
             // TestNum
             // 
@@ -227,6 +229,8 @@ namespace DiskTest11
             this.TestNum.Name = "TestNum";
             this.TestNum.Size = new System.Drawing.Size(130, 39);
             this.TestNum.TabIndex = 9;
+            this.TestNum.Text = "0";
+            this.TestNum.TextChanged += new System.EventHandler(this.TestNum_TextChanged);
             // 
             // TestPercent
             // 
@@ -234,6 +238,7 @@ namespace DiskTest11
             this.TestPercent.Name = "TestPercent";
             this.TestPercent.Size = new System.Drawing.Size(130, 39);
             this.TestPercent.TabIndex = 8;
+            this.TestPercent.Text = "100";
             // 
             // BlockSize
             // 
